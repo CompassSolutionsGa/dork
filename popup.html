@@ -18,13 +18,17 @@
             <option value="intext" title='Find mentions of "domain" in text, excluding the domain itself'>In Text Dork</option>
             <option value="intitle" title='Find mentions of "domain" in page titles, excluding the domain itself'>In Title Dork</option>
             <option value="filetype" title='Find specific file types mentioning "domain", excluding the domain itself'>Filetype Dork</option>
-        </select>
-
-        <label for="competitorDorks">Competitor Analysis:</label>
-        <select id="competitorDorks">
-            <option value="">Select a Competitor Dork</option>
-            <option value="competitorBacklinks">Find Competitor Backlinks</option>
-            <option value="competitorIntext">Find Competitor Mentions in Text</option>
+        <!-- New Dork Types -->
+            <option value="site" title='Find indexed pages from a specific site'>Site Dork</option>
+            <option value="cache" title='Find cached versions of pages'>Cache Dork</option>
+            <option value="related" title='Find pages related to a specific site'>Related Dork</option>
+            <option value="link" title='Find pages linking to a specific URL'>Link Dork</option>
+            <option value="inanchor" title='Find pages where specific keywords appear in the anchor text'>In Anchor Dork</option>
+            <option value="allinurl" title='Find pages where all keywords appear in the URL'>All In URL Dork</option>
+            <option value="allintext" title='Find pages where all keywords appear in the text'>All In Text Dork</option>
+            <option value="allintitle" title='Find pages where all keywords appear in the title'>All In Title Dork</option>
+            <option value="allinanchor" title='Find pages where all keywords appear in the anchor text'>All In Anchor Dork</option>
+            <option value="filetypeAll" title='Find pages of a specific filetype mentioning all keywords'>All Filetype Dork</option>
         </select>
 
         <label for="dateRange">Filter by Date Range:</label>
@@ -48,10 +52,11 @@
                 <button id="exportButton">Export to CSV</button>
             </div>
         </div>
-        
-    <footer>
-        <p>Built by Johnny Graham</p>
-    </footer>
-    <script src="popup.js"></script>
+
+        <footer>
+            <p>Built by Johnny Graham</p>
+        </footer>
+        <script src="popup.js"></script>
+    </div>
 </body>
 </html>

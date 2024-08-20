@@ -1,41 +1,59 @@
 document.getElementById('searchButton').addEventListener('click', function () {
     const domain = document.getElementById('domainInput').value.trim();
     const dorkType = document.getElementById('dorkType').value;
-    const competitorDork = document.getElementById('competitorDorks').value;
     const dateRange = document.getElementById('dateRange').value;
 
     if (domain) {
         let query;
 
-        if (competitorDork) {
-            switch(competitorDork) {
-                case "competitorBacklinks":
-                    query = `"${domain}" -site:${domain} inurl:links`;
-                    break;
-                case "competitorIntext":
-                    query = `"${domain}" -site:${domain} intext:${domain}`;
-                    break;
-            }
-        } else {
-            switch(dorkType) {
-                case "basic":
-                    query = `"${domain}" -site:${domain}`;
-                    break;
-                case "inurl":
-                    query = `"${domain}" -site:${domain} inurl:links`;
-                    break;
-                case "intext":
-                    query = `"${domain}" -site:${domain} intext:${domain}`;
-                    break;
-                case "intitle":
-                    query = `"${domain}" -site:${domain} intitle:${domain}`;
-                    break;
-                case "filetype":
-                    query = `"${domain}" -site:${domain} filetype:pdf`;
-                    break;
-                default:
-                    query = `"${domain}" -site:${domain}`;
-            }
+        switch(dorkType) {
+            case "basic":
+                query = `"${domain}" -site:${domain}`;
+                break;
+            case "inurl":
+                query = `"${domain}" -site:${domain} inurl:${domain}`;
+                break;
+            case "intext":
+                query = `"${domain}" -site:${domain} intext:${domain}`;
+                break;
+            case "intitle":
+                query = `"${domain}" -site:${domain} intitle:${domain}`;
+                break;
+            case "filetype":
+                query = `"${domain}" -site:${domain} filetype:pdf`;
+                break;
+            case "site":
+                query = `site:${domain}`;
+                break;
+            case "cache":
+                query = `cache:${domain}`;
+                break;
+            case "related":
+                query = `related:${domain}`;
+                break;
+            case "link":
+                query = `link:${domain}`;
+                break;
+            case "inanchor":
+                query = `"${domain}" -site:${domain} inanchor:${domain}`;
+                break;
+            case "allinurl":
+                query = `allinurl:${domain}`;
+                break;
+            case "allintext":
+                query = `allintext:${domain}`;
+                break;
+            case "allintitle":
+                query = `allintitle:${domain}`;
+                break;
+            case "allinanchor":
+                query = `allinanchor:${domain}`;
+                break;
+            case "filetypeAll":
+                query = `"${domain}" -site:${domain} filetype:${domain}`;
+                break;
+            default:
+                query = `"${domain}" -site:${domain}`;
         }
 
         if (dateRange) {
@@ -43,7 +61,11 @@ document.getElementById('searchButton').addEventListener('click', function () {
         }
 
         const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-        chrome.tabs.create({ url });
+
+        // Delay opening the new window slightly to prevent the popup from closing too soon
+        setTimeout(() => {
+            chrome.windows.create({ url: url, type: 'popup' });
+        }, 100);
 
         // Save the search to history
         chrome.storage.sync.get({ searchHistory: [] }, function(data) {
@@ -60,26 +82,37 @@ document.getElementById('searchButton').addEventListener('click', function () {
     }
 });
 
+// Function to convert date range to a format compatible with Google search
 function getDateRange(range) {
-    const now = new Date();
-    let pastDate;
+    const today = new Date();
+    let startDate;
+
     switch(range) {
         case 'yesterday':
-            pastDate = new Date(now.setDate(now.getDate() - 1));
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 1);
             break;
         case 'week':
-            pastDate = new Date(now.setDate(now.getDate() - 7));
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 7);
             break;
         case 'month':
-            pastDate = new Date(now.setMonth(now.getMonth() - 1));
+            startDate = new Date(today);
+            startDate.setMonth(today.getMonth() - 1);
             break;
         case 'year':
-            pastDate = new Date(now.setFullYear(now.getFullYear() - 1));
+            startDate = new Date(today);
+            startDate.setFullYear(today.getFullYear() - 1);
             break;
         default:
-            return '';
+            startDate = today;
     }
-    return pastDate.toISOString().split('T')[0];
+
+    const year = startDate.getFullYear();
+    const month = (startDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = startDate.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
 }
 
 // Display search history on load
@@ -116,7 +149,6 @@ function displayHistory() {
         }
     });
 }
-
 
 function deleteSearch(id) {
     chrome.storage.sync.get({ searchHistory: [] }, function(data) {
