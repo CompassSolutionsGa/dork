@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Dork By: Compass Solutions</title>
+    <title>Google Dork Search Tool</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Backlink Finder</h1>
-        <input type="text" id="domainInput" placeholder="Enter domain (e.g., website.com)">
+        <h1>Google Dork Search</h1>
+        <input type="text" id="domainInput" placeholder="Enter domain or keyword (e.g., example.com)">
         
-        <label for="dorkType" title="Select the type of Google Dork query to use">Choose a Dork Type:</label>
+        <label for="dorkType" title="Select the type of Google Dork query to use">Select a Google Dork:</label>
         <select id="dorkType">
             <option value="basic" title='Find backlinks to "domain" excluding results from the domain itself'>Basic Dork</option>
             <option value="inurl" title='Find links to "domain" in URLs, excluding the domain itself'>In URL Dork</option>
@@ -40,7 +40,7 @@
             <option value="year">Past Year</option>
         </select>
 
-        <button id="searchButton">Search Backlinks</button>
+        <button id="searchButton">Search with Dork</button>
 
         <div id="historyContainer">
             <h2>Search History</h2>
